@@ -12,6 +12,7 @@ public class PhysicsifySkinnedMesh : MonoBehaviour {
   public SkinnedMeshRenderer skinnedMesh;
 
   public Transform[] bones;
+  public GameObject[] PhysicsSkeleton;
 
 
 	// Use this for initialization
@@ -25,6 +26,9 @@ public class PhysicsifySkinnedMesh : MonoBehaviour {
   }
 
   void physicsDemBones(){
+
+    PhysicsSkeleton = new GameObject[ bones.Length ];
+
     for( int i = 0; i < bones.Length; i++ ){
       Transform b = bones[i];
 
@@ -32,8 +36,19 @@ public class PhysicsifySkinnedMesh : MonoBehaviour {
       
       bone.transform.position = b.position;
       bone.transform.rotation = b.rotation;
-      bone.transform.localScale = b.localScale;
-      bone.transform.parent = b;
+      bone.transform.localScale = b.localScale * .01f;
+
+      PhysicsSkeleton[i] = bone;
+      //bone.transform.parent = b;
+
+      for( int j = 0; j < bones.Length; j++ ){
+
+        if( b.transform.parent == bones[j]){
+          bone.GetComponent<SpringJoint>().connectedBody = PhysicsSkeleton[j].GetComponent<Rigidbody>();
+        }
+      }
+
+      print( b.transform.parent );
 
 
 //      print( g );
@@ -43,7 +58,12 @@ public class PhysicsifySkinnedMesh : MonoBehaviour {
   }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
+
+    for( int i = 0; i < bones.Length; i++ ){
+      bones[i].position = PhysicsSkeleton[i].transform.position;
+      bones[i].rotation = PhysicsSkeleton[i].transform.rotation;
+    }
 		
 	}
 }
