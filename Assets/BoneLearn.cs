@@ -8,9 +8,9 @@ public class BoneLearn : MonoBehaviour {
 	void Start () {
 
 		SkinnedMeshRenderer skinnedMesh = GetComponent<SkinnedMeshRenderer>();
-		Debug.Log( skinnedMesh.bones.Length );
+//		Debug.Log( skinnedMesh.bones.Length );
 		for( int i = 0; i < skinnedMesh.bones.Length; i++){
-			Debug.Log( skinnedMesh.bones[i]);
+			//Debug.Log( skinnedMesh.bones[i]);
 		}
 
 
